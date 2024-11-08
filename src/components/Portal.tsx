@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 import { canUseDOM } from '~/modules/dom';
 import { isReact16 } from '~/modules/helpers';
@@ -45,8 +46,9 @@ export default class JoyridePortal extends React.Component<Props> {
     }
 
     if (!isReact16) {
-      // eslint-disable-next-line react/no-deprecated
-      ReactDOM.unmountComponentAtNode(this.node);
+      const root = createRoot(this.node);
+
+      root.unmount();
     }
 
     if (this.node.parentNode === document.body) {
