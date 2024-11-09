@@ -104,7 +104,6 @@
     "format": "prettier \"**/*.{js,jsx,ts,tsx}\" --write",
     "validate": "npm run lint && npm run typecheck && npm run test:coverage && npm run e2e && npm run build && npm run size && npm run typevalidation",
     "size": "size-limit",
-    "prepare": "npm run build",
     "prepublishOnly": "npm run validate"
   },
   "tsup": {
