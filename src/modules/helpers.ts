@@ -1,5 +1,4 @@
-import { isValidElement, ReactNode } from 'react';
-import { createPortal } from 'react-dom';
+import { isValidElement, type PropsWithChildren, ReactNode } from 'react';
 import is from 'is-lite';
 
 import { LIFECYCLE } from '~/literals';
@@ -27,8 +26,6 @@ interface ShouldScrollOptions {
   step: Step;
   target: HTMLElement | null;
 }
-
-export const isReact16 = createPortal !== undefined;
 
 /**
  * Get the current browser
@@ -83,7 +80,7 @@ export function getText(root: ReactNode): string {
       content.push(child);
     } else if (Array.isArray(child)) {
       child.forEach(c => recurse(c));
-    } else if (isValidElement(child)) {
+    } else if (isValidElement<PropsWithChildren>(child)) {
       const { children } = child.props;
 
       if (Array.isArray(children)) {
