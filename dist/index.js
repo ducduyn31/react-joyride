@@ -273,9 +273,7 @@ function scrollTo(value, options) {
 
 // src/modules/helpers.ts
 var import_react = require("react");
-var import_react_dom = require("react-dom");
 var import_is_lite = __toESM(require("is-lite"));
-var isReact16 = import_react_dom.createPortal !== void 0;
 function getBrowser(userAgent = navigator.userAgent) {
   let browser = userAgent;
   if (typeof window === "undefined") {
@@ -1193,7 +1191,6 @@ var JoyrideOverlay = class extends React2.Component {
 // src/components/Portal.tsx
 var React3 = __toESM(require("react"));
 var ReactDOM = __toESM(require("react-dom"));
-var import_client = require("react-dom/client");
 var JoyridePortal = class extends React3.Component {
   constructor() {
     super(...arguments);
@@ -1207,55 +1204,25 @@ var JoyridePortal = class extends React3.Component {
     this.node = document.createElement("div");
     this.node.id = id;
     document.body.appendChild(this.node);
-    if (!isReact16) {
-      this.renderReact15();
-    }
-  }
-  componentDidUpdate() {
-    if (!canUseDOM()) {
-      return;
-    }
-    if (!isReact16) {
-      this.renderReact15();
-    }
   }
   componentWillUnmount() {
     if (!canUseDOM() || !this.node) {
       return;
-    }
-    if (!isReact16) {
-      const root = (0, import_client.createRoot)(this.node);
-      root.unmount();
     }
     if (this.node.parentNode === document.body) {
       document.body.removeChild(this.node);
       this.node = null;
     }
   }
-  renderReact15() {
-    if (!canUseDOM()) {
-      return;
-    }
-    const { children } = this.props;
-    if (this.node) {
-      ReactDOM.unstable_renderSubtreeIntoContainer(this, children, this.node);
-    }
-  }
-  renderReact16() {
-    if (!canUseDOM() || !isReact16) {
-      return null;
-    }
-    const { children } = this.props;
-    if (!this.node) {
-      return null;
-    }
-    return ReactDOM.createPortal(children, this.node);
-  }
   render() {
-    if (!isReact16) {
+    if (!canUseDOM()) {
       return null;
     }
-    return this.renderReact16();
+    const { children } = this.props;
+    if (!this.node || !children) {
+      return null;
+    }
+    return /* @__PURE__ */ React3.createElement(React3.Fragment, null, ReactDOM.createPortal(children, this.node));
   }
 };
 
